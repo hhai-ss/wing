@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>林思涵 · 三维建模学习记录</title>
+  <style>
+    /* 全局清新风格 —— 低饱和绿+米白，对眼睛友好 */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      background-color: #f6f9f7;
+      color: #2c3e3a;
+      line-height: 1.6;
+      padding: 2rem 1.5rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+      flex: 1;
+    }
+
+    .welcome-header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding-top: 1rem;
+    }
+
+    .welcome-header h1 {
+      font-size: 2.2rem;
+      font-weight: 500;
+      letter-spacing: 1px;
+      color: #1e4a3b;
+      background: linear-gradient(135deg, #2d6a4f, #40916c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: inline-block;
+      padding-bottom: 0.25rem;
+      border-bottom: 3px solid #b7e4c7;
+    }
+
+    .model-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .model-card {
+      background: #ffffff;
+      border-radius: 28px;
+      box-shadow: 0 12px 28px rgba(46, 70, 60, 0.06), 0 4px 12px rgba(0, 0, 0, 0.02);
+      padding: 2rem 2.2rem;
+      width: 280px;
+      text-align: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      border: 1px solid #e2f0e8;
+      cursor: pointer;
+    }
+
+    .model-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 24px 36px -12px rgba(45, 106, 79, 0.18), 0 8px 18px rgba(0, 0, 0, 0.02);
+      border-color: #a8d5ba;
+    }
+
+    .model-card .icon {
+      font-size: 3.2rem;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    .model-card h2 {
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: #1e4a3b;
+      margin-bottom: 0.5rem;
+    }
+
+    .model-card p {
+      color: #5e7b6e;
+      font-size: 0.95rem;
+      border-top: 1px dashed #cfe6db;
+      padding-top: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .page-header h1 {
+      font-size: 2rem;
+      font-weight: 500;
+      color: #1e4a3b;
+      letter-spacing: 0.5px;
+    }
+
+    .page-header .subhead {
+      color: #6b8f7c;
+      margin-top: 0.4rem;
+      font-size: 1rem;
+      border-bottom: 1px solid #d8eae0;
+      display: inline-block;
+      padding-bottom: 0.4rem;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1.5rem;
+      color: #40916c;
+      text-decoration: none;
+      font-weight: 500;
+      background: #ecf6f1;
+      padding: 0.4rem 1.2rem;
+      border-radius: 40px;
+      font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+
+    .back-link:hover {
+      background: #d0ebdd;
+    }
+
+    .content-section {
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 2.2rem 2.5rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02);
+      border: 1px solid #e2f0e8;
+      margin-bottom: 2rem;
+    }
+
+    .process-text {
+      font-size: 1.05rem;
+      margin-bottom: 2rem;
+      padding-left: 0.5rem;
+      border-left: 6px solid #b7e4c7;
+      padding: 0.75rem 0 0.75rem 1.5rem;
+      background: #f9fdfb;
+      border-radius: 0 20px 20px 0;
+    }
+
+    .process-text strong {
+      color: #2d6a4f;
+      font-weight: 600;
+    }
+
+    .step-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #1e4a3b;
+      margin: 1.8rem 0 0.8rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .step-title .step-badge {
+      background: #40916c;
+      color: #ffffff;
+      font-size: 0.8rem;
+      font-weight: 500;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .problem-block {
+      margin-top: 1.5rem;
+    }
+
+    .problem-block h3 {
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: #2d6a4f;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .problem-block h3::before {
+      content: '🔧';
+      font-size: 1.3rem;
+    }
+
+    .problem-item {
+      margin-bottom: 2rem;
+      background: #f9fdfb;
+      border-radius: 20px;
+      padding: 1.2rem 1.5rem 1.5rem;
+      border: 1px solid #d8eae0;
+    }
+
+    .problem-desc {
+      font-weight: 500;
+      color: #1e4a3b;
+      margin-bottom: 0.75rem;
+      font-size: 1rem;
+    }
+
+    .problem-desc span {
+      background: #e0f2e9;
+      padding: 0.15rem 0.7rem;
+      border-radius: 40px;
+      font-size: 0.85rem;
+      color: #2d6a4f;
+      margin-left: 0.5rem;
+      display: inline-block;
+    }
+
+    .figure-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 0.8rem;
+    }
+
+    .figure-wrap img {
+      max-width: 100%;
+      max-height: 380px;
+      border-radius: 18px;
+      box-shadow: 0 6px 16px rgba(45, 106, 79, 0.08);
+      border: 1px solid #e0efe8;
+      transition: transform 0.15s;
+      background: #fff;
+      padding: 4px;
+    }
+
+    .figure-wrap img:hover {
+      transform: scale(1.005);
+    }
+
+    .figure-caption {
+      font-size: 0.85rem;
+      color: #6b8f7c;
+      margin-top: 0.6rem;
+      background: #ecf6f1;
+      padding: 0.2rem 1rem;
+      border-radius: 30px;
+    }
+
+    .detail-text {
+      color: #3e5e51;
+      margin-bottom: 0.8rem;
+    }
+
+    .tip-note {
+      background: #f0f7f2;
+      border-left: 4px solid #95d5b2;
+      padding: 0.75rem 1.2rem;
+      border-radius: 12px;
+      margin: 1rem 0;
+      font-size: 0.95rem;
+      color: #2d6a4f;
+    }
+
+    .footer-note {
+      text-align: center;
+      margin-top: 3rem;
+      font-size: 0.85rem;
+      color: #9bb8aa;
+      border-top: 1px solid #d8eae0;
+      padding-top: 1.5rem;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 1.5rem 1rem; }
+      .welcome-header h1 { font-size: 1.7rem; }
+      .model-card { width: 100%; max-width: 320px; }
+      .content-section { padding: 1.5rem; }
+      .problem-item { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- 首页视图 —— 欢迎 + 两个入口 -->
+    <div id="home-view">
+      <div class="welcome-header">
+        <h1>✨ 欢迎来到林思涵的个人网站 ✨</h1>
+      </div>
+
+      <div class="model-grid">
+        <!-- 沙发建模卡片 -->
+        <div class="model-card" onclick="window.location.href='#sofa'">
+          <span class="icon">🛋️</span>
+          <h2>沙发建模</h2>
+          <p>切角底座 · 多边形编辑 · 镜像复制</p>
+        </div>
+        <!-- 衣柜建模卡片 -->
+        <div class="model-card" onclick="window.location.href='#cabinet'">
+          <span class="icon">🗄️</span>
+          <h2>衣柜建模</h2>
+          <p>样条线 · 轮廓挤出 · 2.5维调整</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 沙发建模记录视图 (hash: #sofa) -->
+    <div id="sofa-view" style="display: none;">
+      <a href="#" class="back-link" onclick="window.location.hash=''; return false;">← 返回首页</a>
+      <div class="page-header">
+        <h1>🛋️ 沙发建模记录</h1>
+        <div class="subhead">林思涵 · 三维建模作业</div>
+      </div>
+
+      <div class="content-section">
+        <!-- 总体过程 -->
+        <div class="process-text">
+          <strong>总体过程：</strong>建立正方体，然后进行多边形编辑。先做沙发的一半，另一半复制出来。沙发的底座四个角使用切角工具使正方体的角变圆润，沙发的整体形状则是通过调整顶点和线来塑造的。
+        </div>
+
+        <!-- 详细步骤 -->
+        <div class="step-title"><span class="step-badge">1</span> 沙发底座：切角让棱角变圆润</div>
+        <div class="problem-item">
+          <p class="detail-text">
+            沙发底座的制作从一个正方体开始。为了让底座四个角不那么尖锐，我使用了<strong>切角工具</strong>（Chamfer），对正方体的四条垂直边和上边的角进行切角处理，使棱角变得圆润自然。切角时注意控制切角的幅度，过大会让底座显得松软，过小则不够柔和，经过几次调整才找到合适的数值。
+          </p>
+          <div class="tip-note">
+            💡 小提示：切角之前可以先在透视图中确认一下角度，切角后配合平滑组可以让表面过渡更自然。
+          </div>
+        </div>
+
+        <div class="step-title"><span class="step-badge">2</span> 沙发形状：调整顶点与线</div>
+        <div class="problem-item">
+          <p class="detail-text">
+            底座完成之后，进入<strong>多边形编辑</strong>模式。沙发的整体轮廓不是靠新的基本体拼接出来的，而是直接在正方体的基础上<strong>调整顶点和线</strong>来塑形：选中需要外扩或内收的顶点，用移动工具一点点调整位置；同时结合边线的缩放和移动，让座面、扶手和靠背的过渡更自然。
+          </p>
+          <p class="detail-text">
+            为了减少重复劳动，我先只做了<strong>沙发的一半</strong>——把对称轴上的顶点对齐，另一半通过<strong>复制</strong>得到，再整体检查接缝处是否贴合。这一步需要对形状有整体预判，否则调整一半的时候很难想象另一半的效果。
+          </p>
+          <div class="tip-note">
+            💡 小提示：调整顶点时多用正视图和侧视图对照，单看透视图容易产生位置偏差。做一半再复制，能省下不少时间。
+          </div>
+        </div>
+
+        <!-- 遇到的问题与图片记录 -->
+        <div class="problem-block">
+          <h3>遇到的问题与图片记录</h3>
+
+          <!-- 问题1: 沙发腿制作 -->
+          <div class="problem-item">
+            <div class="problem-desc">
+              沙发腿的制作 <span>镜像复制</span>
+            </div>
+            <p class="detail-text">
+              先制作出一个沙发腿，然后通过<strong>镜像复制</strong>做出其他沙发腿。镜像之前要确认轴心位置是否正确，否则复制出来的腿会错位。我选择了对称轴上的合适位置作为镜像中心，一次性得到了四个对称的沙发腿。
+            </p>
+            <div class="figure-wrap">
+              <img src="对称桌子腿.png" alt="对称桌子腿 - 镜像复制沙发腿">
+              <div class="figure-caption">对称桌子腿.png</div>
+            </div>
+            <div style="margin-top: 1.2rem;"></div>
+            <div class="figure-wrap">
+              <img src="沙发完.png" alt="沙发完 - 完成效果">
+              <div class="figure-caption">沙发完.png · 最终完成效果</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 衣柜建模记录视图 (hash: #cabinet) -->
+    <div id="cabinet-view" style="display: none;">
+      <a href="#" class="back-link" onclick="window.location.hash=''; return false;">← 返回首页</a>
+      <div class="page-header">
+        <h1>🗄️ 衣柜建模记录</h1>
+        <div class="subhead">林思涵 · 三维建模作业</div>
+      </div>
+
+      <div class="content-section">
+        <!-- 总体过程 -->
+        <div class="process-text">
+          <strong>总体过程：</strong>创建样条线，然后对样条线进行样条线编辑，通过轮廓和挤出增加厚度。
+        </div>
+
+        <!-- 遇到的问题与图片记录 -->
+        <div class="problem-block">
+          <h3>学习过程与问题记录</h3>
+
+          <!-- 问题1: 拆分点不等高 -->
+          <div class="problem-item">
+            <div class="problem-desc">
+              1. 制作隔层时使用拆分 <span>发现拆分点不等高</span>
+            </div>
+            <p class="detail-text">用2.5维工具移动顶点使它等高。</p>
+            <div class="figure-wrap">
+              <img src="拆分点不等高.png" alt="拆分点不等高 - 2.5维调整">
+              <div class="figure-caption">拆分点不等高.png</div>
+            </div>
+          </div>
+
+          <!-- 问题2: 样条线创建轮廓勾选中心点 -->
+          <div class="problem-item">
+            <div class="problem-desc">
+              2. 样条线创建轮廓勾选中心点 <span>创建对称的中心点</span>
+            </div>
+            <p class="detail-text">通过勾选中心点，可以创建对称的中心点。</p>
+            <div class="figure-wrap">
+              <img src="样条线轮廓中心点.png" alt="样条线轮廓中心点">
+              <div class="figure-caption">样条线轮廓中心点.png</div>
+            </div>
+          </div>
+
+          <!-- 问题3: 拆分导致顶点过多 -> 转化为角点 -->
+          <div class="problem-item">
+            <div class="problem-desc">
+              3. 顶点过多时 <span>转化为角点</span>
+            </div>
+            <p class="detail-text">如果拆分导致顶点过多，可以选择顶点转化为角点。</p>
+            <div class="figure-wrap">
+              <img src="转化为角点.png" alt="转化为角点">
+              <div class="figure-caption">转化为角点.png</div>
+            </div>
+          </div>
+
+          <!-- 问题4: 制作第一个柜子的隔层 -->
+          <div class="problem-item">
+            <div class="problem-desc">
+              4. 制作第一个柜子的隔层 <span>锁定轴 + 2.5维</span>
+            </div>
+            <p class="detail-text">选择制作好的隔层，先锁定轴，开2.5维，然后移动复制隔层。</p>
+            <div class="figure-wrap">
+              <img src="第一个柜子.png" alt="第一个柜子 - 移动复制隔层">
+              <div class="figure-caption">第一个柜子.png</div>
+            </div>
+          </div>
+
+          <!-- 问题5: 用样条线制作背板 -->
+          <div class="problem-item">
+            <div class="problem-desc">
+              5. 用样条线制作背板 <span>衣柜成型</span>
+            </div>
+            <p class="detail-text">最后用样条线制作背板，完成衣柜。</p>
+            <div class="figure-wrap">
+              <img src="柜子.png" alt="柜子 - 最终效果">
+              <div class="figure-caption">柜子.png</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 页脚 -->
+    <div class="footer-note">
+      © 林思涵 · 三维建模学习记录 · 简约清新
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      function router() {
+        const hash = window.location.hash.substring(1);
+        const homeView = document.getElementById('home-view');
+        const sofaView = document.getElementById('sofa-view');
+        const cabinetView = document.getElementById('cabinet-view');
+
+        homeView.style.display = 'none';
+        sofaView.style.display = 'none';
+        cabinetView.style.display = 'none';
+
+        if (hash === 'sofa') {
+          sofaView.style.display = 'block';
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else if (hash === 'cabinet') {
+          cabinetView.style.display = 'block';
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          homeView.style.display = 'block';
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+
+      window.addEventListener('hashchange', router);
+      window.addEventListener('load', router);
+    })();
+  </script>
+</body>
+</html>

@@ -1,119 +1,344 @@
-{
-  "projects": [
-    {
-      "id": "sofa",
-      "title": "沙发建模",
-      "icon": "🛋️",
-      "desc": "切角底座 · 多边形编辑 · 镜像复制",
-      "details": [
-        {
-          "step": "总体过程",
-          "texts": [
-            "建立正方体，然后进行多边形编辑。先做沙发的一半，另一半复制出来。沙发的底座四个角使用切角工具使正方体的角变圆润，沙发的整体形状则是通过调整顶点和线来塑造的。"
-          ],
-          "images": []
-        },
-        {
-          "step": "沙发底座：切角让棱角变圆润",
-          "texts": [
-            "沙发底座的制作从一个正方体开始。为了让底座四个角不那么尖锐，我使用了切角工具（Chamfer），使棱角变得圆润自然。切角时注意控制切角的幅度，过大会让底座显得松软，过小则不够柔和。"
-          ],
-          "images": []
-        },
-        {
-          "step": "沙发形状：调整顶点与线",
-          "texts": [
-            "底座完成之后，进入多边形编辑模式。直接在正方体的基础上调整顶点和线来塑形，让座面、扶手和靠背的过渡更自然。为了减少重复劳动，我先只做了沙发的一半，另一半通过复制得到。"
-          ],
-          "images": []
-        },
-        {
-          "step": "沙发腿的制作：镜像复制",
-          "texts": [
-            "先制作出一个沙发腿，然后通过镜像复制做出其他沙发腿。镜像之前要确认轴心位置是否正确。"
-          ],
-          "images": ["对称桌子腿.png", "沙发完.png"]
-        }
-      ]
-    },
-    {
-      "id": "cabinet",
-      "title": "衣柜建模",
-      "icon": "🗄️",
-      "desc": "样条线 · 轮廓挤出 · 2.5维调整",
-      "details": [
-        {
-          "step": "总体过程",
-          "texts": [
-            "创建样条线，然后对样条线进行样条线编辑，通过轮廓和挤出增加厚度。"
-          ],
-          "images": []
-        },
-        {
-          "step": "制作隔层时使用拆分，发现拆分点不等高",
-          "texts": [
-            "用2.5维工具移动顶点使它等高。"
-          ],
-          "images": ["拆分点不等高.png"]
-        },
-        {
-          "step": "样条线创建轮廓勾选中心点",
-          "texts": [
-            "通过勾选中心点，可以创建对称的中心点。"
-          ],
-          "images": ["样条线轮廓中心点.png"]
-        },
-        {
-          "step": "顶点过多时转化为角点",
-          "texts": [
-            "如果拆分导致顶点过多，可以选择顶点转化为角点。"
-          ],
-          "images": ["转化为角点.png"]
-        },
-        {
-          "step": "制作第一个柜子的隔层",
-          "texts": [
-            "选择制作好的隔层，先锁定轴，开2.5维，然后移动复制隔层。"
-          ],
-          "images": ["第一个柜子.png"]
-        },
-        {
-          "step": "用样条线制作背板",
-          "texts": [
-            "最后用样条线制作背板，完成衣柜。"
-          ],
-          "images": ["柜子.png"]
-        }
-      ]
-    },
-    {
-      "id": "desk-set",
-      "title": "鼠标键盘显示屏三件套",
-      "icon": "🖥️",
-      "desc": "多边形建模 · 挤出 · 倒角缩放",
-      "details": [
-        {
-          "step": "鼠标制作",
-          "texts": [
-            "用长方体转化为可编辑多边形，添加循环线和调整顶点做出大概形状，然后用挤出做出鼠标有缝的地方。"
-          ],
-          "images": ["老鼠标.png"]
-        },
-        {
-          "step": "键盘制作",
-          "texts": [
-            "用矩形做的，然后添加线，把键盘键帽的布局弄出来，再用倒角和挤出和缩放做出键帽。"
-          ],
-          "images": ["键盘.png"]
-        },
-        {
-          "step": "显示屏制作",
-          "texts": [
-            "分三部分。屏幕办法是用矩形做的，支架部分也是用矩形，用倒角把支架边角变圆滑，用挤出做出显示屏侧面与支架连接部分。"
-          ],
-          "images": ["显示屏.png"]
-        }
-      ]
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>林思涵的个人网站</title>
+  <style>
+    /* --- 全局毛玻璃黄色可爱背景 --- */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #FFFDE7 0%, #FFF59D 50%, #FFE082 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
+      color: #4E342E;
+      overflow-x: hidden;
     }
-  ]
-}
+
+    .glass-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.2);
+      z-index: -2;
+    }
+
+    .ice-cream-bg {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: -1;
+      overflow: hidden;
+    }
+    .ice-cream {
+      position: absolute;
+      top: -50px;
+      font-size: 2.5rem;
+      opacity: 0.25;
+      animation: fall linear infinite;
+    }
+    @keyframes fall {
+      0% { transform: translateY(-50px) rotate(0deg); }
+      100% { transform: translateY(105vh) rotate(360deg); }
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .profile-card {
+      background: #FFFFFF;
+      border-radius: 24px;
+      padding: 2.5rem;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 10px 30px rgba(200, 150, 0, 0.15);
+      margin-bottom: 3rem;
+      border: 2px solid #FFF9C4;
+    }
+
+    .avatar {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 5px solid #FFF59D;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      flex-shrink: 0;
+      margin-right: 2.5rem;
+      background: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 25%; 
+      transform: scale(1.2);
+    }
+
+    .info h1 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.8rem;
+      color: #3E2723;
+    }
+    .info h1 span {
+      font-size: 1.2rem;
+      color: #8D6E63;
+      font-weight: 500;
+      margin-left: 0.5rem;
+    }
+    .info .class-name {
+      margin: 0 0 1rem 0;
+      font-size: 1.1rem;
+      color: #795548;
+      font-weight: 500;
+    }
+    .info .bio {
+      margin: 0;
+      font-size: 0.95rem;
+      color: #A1887F;
+      background: #FFFDE7;
+      display: inline-block;
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+    }
+
+    .section-title {
+      text-align: center;
+      color: #5D4037;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .card {
+      background: #FFFFFF;
+      border-radius: 20px;
+      padding: 2rem;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(200, 150, 0, 0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: 2px solid transparent;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 25px rgba(200, 150, 0, 0.2);
+      border-color: #FFE082;
+    }
+    .card .icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .card h3 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.3rem;
+      color: #3E2723;
+    }
+    .card p {
+      margin: 0;
+      color: #8D6E63;
+      font-size: 0.9rem;
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-bottom: 2rem;
+      padding: 0.6rem 1.5rem;
+      background: #FFFFFF;
+      color: #5D4037;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      transition: 0.2s;
+    }
+    .back-btn:hover {
+      background: #FFF9C4;
+    }
+    .detail-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .detail-header h2 {
+      font-size: 2rem;
+      color: #3E2723;
+      margin: 0 0 0.5rem 0;
+    }
+    .detail-section {
+      background: #FFFFFF;
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 6px 20px rgba(200, 150, 0, 0.1);
+    }
+    .detail-section h4 {
+      color: #E65100;
+      font-size: 1.2rem;
+      margin: 0 0 1rem 0;
+      border-left: 4px solid #FFB300;
+      padding-left: 10px;
+    }
+    .detail-section p {
+      color: #5D4037;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    .detail-img {
+      max-width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      margin-top: 1rem;
+      display: block;
+    }
+    .img-name {
+      font-size: 0.8rem;
+      color: #A1887F;
+      text-align: center;
+      margin-top: 0.5rem;
+    }
+    .hidden { display: none !important; }
+    @media (max-width: 600px) {
+      .profile-card { flex-direction: column; text-align: center; padding: 2rem 1.5rem; }
+      .avatar { margin-right: 0; margin-bottom: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="glass-overlay"></div>
+  <div class="ice-cream-bg" id="ice-cream-bg"></div>
+
+  <div class="container">
+    <div id="home-view">
+      <div class="profile-card">
+        <div class="avatar">
+          <img src="头像.jpg" alt="头像" onerror="this.src='https://via.placeholder.com/150/FFF59D/5D4037?text=Avatar'">
+        </div>
+        <div class="info">
+          <h1>林思涵 <span>25120031053</span></h1>
+          <p class="class-name">数字媒体技术01班</p>
+          <p class="bio">这个人很懒，啥也没写。</p>
+        </div>
+      </div>
+
+      <h2 class="section-title">✨ 我的三维作品 ✨</h2>
+      <div class="grid" id="portfolio-grid"></div>
+    </div>
+
+    <div id="detail-view" class="hidden">
+      <a href="#" class="back-btn" onclick="window.location.hash=''; return false;">← 返回首页</a>
+      <div class="detail-header">
+        <h2 id="detail-title"></h2>
+      </div>
+      <div id="detail-content"></div>
+    </div>
+  </div>
+
+  <script>
+    const iceBg = document.getElementById('ice-cream-bg');
+    for(let i=0; i<15; i++) {
+      let ice = document.createElement('div');
+      ice.className = 'ice-cream';
+      ice.innerText = '🍦';
+      ice.style.left = Math.random() * 100 + '%';
+      ice.style.animationDuration = (Math.random() * 10 + 10) + 's';
+      ice.style.animationDelay = Math.random() * 5 + 's';
+      ice.style.fontSize = (Math.random() * 1.5 + 1.5) + 'rem';
+      iceBg.appendChild(ice);
+    }
+
+    let siteData = {};
+
+    async function loadData() {
+      try {
+        const response = await fetch('data.json');
+        siteData = await response.json();
+        renderHome();
+        router();
+      } catch (error) {
+        console.error("数据加载失败", error);
+        document.getElementById('portfolio-grid').innerHTML = '<p style="color:red">数据加载失败，请检查 data.json</p>';
+      }
+    }
+
+    function renderHome() {
+      const grid = document.getElementById('portfolio-grid');
+      grid.innerHTML = '';
+      siteData.projects.forEach(project => {
+        const a = document.createElement('a');
+        a.className = 'card';
+        a.href = '#' + project.id;
+        a.innerHTML = `
+          <div class="icon">${project.icon}</div>
+          <h3>${project.title}</h3>
+          <p>${project.desc}</p>
+        `;
+        grid.appendChild(a);
+      });
+    }
+
+    function renderDetail(id) {
+      const project = siteData.projects.find(p => p.id === id);
+      if (!project) return;
+
+      document.getElementById('detail-title').innerText = project.title;
+      const content = document.getElementById('detail-content');
+      content.innerHTML = '';
+
+      project.details.forEach(section => {
+        const div = document.createElement('div');
+        div.className = 'detail-section';
+        let html = `<h4>${section.step}</h4>`;
+        section.texts.forEach(text => {
+          html += `<p>${text}</p>`;
+        });
+        if (section.images && section.images.length > 0) {
+          section.images.forEach(imgName => {
+            html += `
+              <img src="${imgName}" class="detail-img" alt="${imgName}">
+              <div class="img-name">${imgName}</div>
+            `;
+          });
+        }
+        div.innerHTML = html;
+        content.appendChild(div);
+      });
+    }
+
+    function router() {
+      const hash = window.location.hash.substring(1);
+      const home = document.getElementById('home-view');
+      const detail = document.getElementById('detail-view');
+
+      if (hash && siteData.projects && siteData.projects.some(p => p.id === hash)) {
+        home.classList.add('hidden');
+        detail.classList.remove('hidden');
+        renderDetail(hash);
+      } else {
+        detail.classList.add('hidden');
+        home.classList.remove('hidden');
+      }
+      window.scrollTo(0, 0);
+    }
+
+    window.addEventListener('hashchange', router);
+    window.addEventListener('load', loadData);
+  </script>
+</body>
+</html>
